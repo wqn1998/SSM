@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.YuyueDao" >
+  <resultMap id="BaseResultMap" type="com.pojo.Yuyue" >
+    <id column="yid" property="yid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="ymessage" property="ymessage" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="receive" property="receive" jdbcType="VARCHAR" />
+    <result column="receivetime" property="receivetime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <association property="myuser" column="uid" select="getbyuid"></association>
+     <association property="fangyuan" column="fid" select="getbyfid"></association>
+  </resultMap>
+    <select id="getbyuid" resultType="com.pojo.Myuser">
+     select * from myuser where uid=#{uid}
+    </select>
+     <select id="getbyfid" resultType="com.pojo.Fangyuan">
+     select * from fangyuan where fid=#{fid}
+    </select>
+  
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      yid, uid, tel, fid, ymessage, createtime, receive, receivetime, status
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pojo.YuyueQuery" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    yid,uid,tel,fid,ymessage,createtime,receive,receivetime,status
+    from yuyue
+    where yid = #{yid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from yuyue
+    where yid = #{yid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pojo.YuyueQuery" >
+    delete from yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pojo.Yuyue" >
+    insert into yuyue (yid, uid, tel, 
+      fid, ymessage, createtime, 
+      receive, receivetime, status
+      )
+    values (#{yid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{tel,jdbcType=VARCHAR}, 
+      #{fid,jdbcType=INTEGER}, #{ymessage,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{receive,jdbcType=VARCHAR}, #{receivetime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pojo.Yuyue" >
+    insert into yuyue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="yid != null" >
+        yid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="ymessage != null" >
+        ymessage,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="receive != null" >
+        receive,
+      </if>
+      <if test="receivetime != null" >
+        receivetime,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="yid != null" >
+        #{yid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="ymessage != null" >
+        #{ymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receive != null" >
+        #{receive,jdbcType=VARCHAR},
+      </if>
+      <if test="receivetime != null" >
+        #{receivetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pojo.YuyueQuery" resultType="java.lang.Integer" >
+    select count(*) from yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update yuyue
+    <set >
+      <if test="record.yid != null" >
+        yid = #{record.yid,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.tel != null" >
+        tel = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fid != null" >
+        fid = #{record.fid,jdbcType=INTEGER},
+      </if>
+      <if test="record.ymessage != null" >
+        ymessage = #{record.ymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.receive != null" >
+        receive = #{record.receive,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receivetime != null" >
+        receivetime = #{record.receivetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update yuyue
+    set yid = #{record.yid,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=INTEGER},
+      tel = #{record.tel,jdbcType=VARCHAR},
+      fid = #{record.fid,jdbcType=INTEGER},
+      ymessage = #{record.ymessage,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      receive = #{record.receive,jdbcType=VARCHAR},
+      receivetime = #{record.receivetime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pojo.Yuyue" >
+    update yuyue
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="ymessage != null" >
+        ymessage = #{ymessage,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receive != null" >
+        receive = #{receive,jdbcType=VARCHAR},
+      </if>
+      <if test="receivetime != null" >
+        receivetime = #{receivetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where yid = #{yid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pojo.Yuyue" >
+    update yuyue
+    set uid = #{uid,jdbcType=INTEGER},
+      tel = #{tel,jdbcType=VARCHAR},
+      fid = #{fid,jdbcType=INTEGER},
+      ymessage = #{ymessage,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      receive = #{receive,jdbcType=VARCHAR},
+      receivetime = #{receivetime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR}
+    where yid = #{yid,jdbcType=INTEGER}
+  </update>
+</mapper>
